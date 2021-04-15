@@ -4,14 +4,28 @@ export default class {
 	}
 
 	async getTodos() {
-		let raw = await fetch(this.baseUrl + 'todoitems/', {
+		let raw = await fetch(this.baseUrl + 'todoitem/', {
 			mode: 'cors',
 			cache: 'no-cache',
-			method: 'GET',
+			method: 'GET'
 		});
-
 		let pdata = await raw.json();
-		//console.log(pdata);
 		return pdata;
+	}
+
+	async addTodo(todo) {
+		let req = await fetch(this.baseUrl + 'todoitem/', {
+			method: "POST",
+			headers: {
+				"accept": "application/json",
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(todo)
+		}
+		);
+
+		let res = await req.json();
+
+		return res;
 	}
 }

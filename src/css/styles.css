@@ -1,4 +1,14 @@
 body {
-    margin: 0;
+    margin: 3px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.task {
+    border: rgb(60, 60, 60) 4px solid;
+    margin: 4px;
+    width: 30vw;
+}
+
+.complete {
+    background-color: RGB(45, 45, 45);
 }

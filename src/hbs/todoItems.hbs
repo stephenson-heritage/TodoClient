@@ -1,3 +1,14 @@
 {{#each this}}
-item
+<div class="task {{#if isComplete}}complete{{/if}}" id="task-{{todoItemId}}">
+    <div class="task-name">{{name}}</div>
+    <div class="task-delete">
+        <button data-id="{{todoItemId}}">Delete</button>
+    </div>
+
+    {{#unless isComplete}}
+    <div class="task-complete">
+        <button data-id="{{todoItemId}}">Complete</button>
+    </div>
+    {{/unless}}
+</div>
 {{/each}}
