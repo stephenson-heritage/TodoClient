@@ -15,36 +15,55 @@ app.innerHTML = TodoView(
 
 let todos = new Todos('https://localhost:5001/api/');
 
-todos.getTodos().then((list) => {
-	let itemsList = document.getElementById('items');
-	console.log(list);
-	itemsList.innerHTML = TodoItems(list);
-});
 
+let init = function () {
+	todos.getTodos().then((list) => {
+		let itemsList = document.getElementById('items');
+		itemsList.innerHTML = "";
+		//console.log(list);
+		itemsList.innerHTML = TodoItems(list);
+		addHandlers();
+	});
+};
 
-let setup = function () {
+let addHandlers = function () {
+	let completeBtns = document.querySelectorAll(".task-complete button");
+	completeBtns.forEach((btn) => {
+		btn.addEventListener("click", async (e) => {
+			let id = e.target.dataset.id;
+
+			await todos.setComplete(id);
+			init();
+		})
+	});
+
+	let deleteBtns = document.querySelectorAll(".task-delete button");
+	deleteBtns.forEach((btn) => {
+		btn.addEventListener("click", (e) => {
+			let id = e.target.dataset.id;
+			todos.remove(id).then(d => {
+				init();
+			});
+		})
+	});
 
 }
 
-let completeBtns = document.querySelectorAll("task-complete button");
-completeBtns.forEach((btn) => {
-	btn.addEventListener("click", (e) => {
-		let id = e.target.dataset.id;
-
-		console.log(id);
-	})
-});
 
 
-document.getElementById("add").addEventListener("click", () => {
+
+document.getElementById("add").addEventListener("click", async () => {
 	let elName = document.getElementById("name");
 	let elDue = document.getElementById("due");
 	let data = {
 		"name": elName.value,
 		"due": elDue.value
 	};
-	todos.addTodo(data);
+	await todos.addTodo(data);
 	elName.value = "";
 	elDue.value = new Date().toISOString();
+	init();
 });
 
+
+init();
